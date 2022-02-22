@@ -4,10 +4,9 @@ const baseConfig = {
   isDev: env === 'development',
   port: process.env.PORT || 5000,
   secrets: {
-    jwt: process.env.JWT_SECRET,
-    jwtExp: '100d'
+    jwt: process.env.JWT_SECRET
   },
-  dbUrl: 'mongodb://localhost:27017/api-design'
+  dbUrl: 'mongodb+srv://test:test@cluster0.kdqcz.mongodb.net/notes-app'
 }
 
 module.exports = baseConfig
