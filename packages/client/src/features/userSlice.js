@@ -2,17 +2,50 @@ import {createSlice, createAsyncThunk} from '@reduxjs/toolkit'
 import http from "../utils/http";
 
 const initialState = {
-    notes: [],
-    user: null,
+    userId: null,
+    email: null,
     loading: false,
+    errors: null,
+}
+
+const postUser = async (data, {rejectWithValue}) => {
+    try {
+        const response = await http.post(data.url, data.body)
+        return response.data;
+    }
+    catch (err) {
+        return rejectWithValue(err.response.data)
+    }
 }
 
 export const addUser = createAsyncThunk(
     'user/signup',
-    async (body) => {
-        const response = await http.post('user/signup', body)
+    postUser
+)
 
-        return response.data;
+export const verifyToken = createAsyncThunk(
+    'user/verifyToken',
+    async (data = {}, {rejectWithValue}) => {
+        try {
+            const response = await http.get('user/verify')
+            return response.data;
+        }
+        catch (err) {
+            return rejectWithValue(err.response.data)
+        }
+    }
+)
+
+export const logoutUser = createAsyncThunk(
+    'user/logout',
+    async (data = {}, {rejectWithValue}) => {
+        try {
+            const response = await http.get('user/logout')
+            return response.data;
+        }
+        catch (err) {
+            return rejectWithValue(err.response.data)
+        }
     }
 )
 
@@ -41,22 +74,25 @@ export const userSlice = createSlice({
             builder
                 .addCase(addUser.fulfilled, (state, action) => {
                     state.loading = false
-                    state.userId = action?.userId;
+                    state.userId = action.payload.userId;
                 })
-                .addMatcher(
-                    // matcher can be defined inline as a type predicate function
-                    (action) => action.type.endsWith('/rejected'),
-                    (state, action) => {
-                        state.loading = false
-                    }
-                )
-                // matcher can just return boolean and the matcher can receive a generic argument
-                .addMatcher(
-                    (action) => action.type.endsWith('/pending'),
-                    (state, action) => {
-                        state.loading = true
-                    }
-                )
+                .addCase(addUser.rejected, (state, action) => {
+                    state.loading = false
+                    state.errors = action.payload?.errors;
+                })
+                .addCase(addUser.pending, (state, action) => {
+                    state.loading = true
+                    state.errors = null
+                })
+                .addCase(verifyToken.fulfilled, (state, action) => {
+                    state.loading = false
+                    state.email = action.payload.email;
+                })
+                .addCase(logoutUser.fulfilled, (state, action) => {
+                    state.loading = false
+                    state.email = null;
+                    state.userId = null;
+                })
         }
 })
 

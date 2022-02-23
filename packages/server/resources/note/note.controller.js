@@ -3,10 +3,10 @@ const Note = require('./note.model')
 const getMany = async (req, res) => {
   try {
     const docs = await Note.find({}).exec()
-    res.send({ data: docs })
+    res.status(200).json({ data: docs })
   } catch (e) {
     console.error(e)
-    res.status(400).end()
+    res.status(400).json({ error: e })
   }
 }
 
@@ -16,8 +16,8 @@ const createOne = async (req, res) => {
       ...req.body
     })
     res.send({ data: created })
-  } catch (e) {
-    console.error(e)
+  } catch (error) {
+    console.error(error)
     res.status(400).end()
   }
 }

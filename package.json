@@ -2,9 +2,11 @@
   "name": "root",
   "private": true,
   "scripts": {
-    "lerna-bootstap": "lerna bootstrap"
+    "lerna-bootstap": "lerna bootstrap",
+    "lerna start": "lerna run start --parallel"
   },
   "devDependencies": {
-    "lerna": "^4.0.0"
+    "lerna": "^4.0.0",
+    "eslint": "^7.31.0"
   }
 }

@@ -9,7 +9,7 @@ router
   .get(getMany)
   .post(createOne)
 
-// /api/item/:id
+// /api/note/:id
 router
   .route('/:id')
   .get(getOne)

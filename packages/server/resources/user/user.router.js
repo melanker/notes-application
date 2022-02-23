@@ -1,9 +1,9 @@
 const { Router } = require('express')
-const { login, signup } = require('./user.controller')
+const { login, signup, verifyToken, logout } = require('./user.controller')
 
 const router = Router()
 
-// /api/user
+// /user
 router
   .route('/signup')
   .post(signup)
@@ -12,5 +12,14 @@ router
 router
   .route('/login')
   .post(login)
+
+// user/verify_token
+router
+  .route('/verify')
+  .get(verifyToken)
+
+router
+  .route('/logout')
+  .get(logout)
 
 module.exports = router
