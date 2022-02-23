@@ -1,2 +1,2 @@
-web: lerna bootstrap
-web: lerna run start --parallel
+web: npm i;lerna bootstrap;lerna run start --parallel
+
